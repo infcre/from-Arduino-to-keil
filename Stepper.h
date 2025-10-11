@@ -1,8 +1,15 @@
+#pragma once
 #ifndef Stepper_h
 #define Stepper_h
 #include "stm32f1xx_hal.h"
 
-inline void digitalWrite(const Pin& p, GPIO_PinState state) {
+static inline uint32_t micros()
+{
+    const uint32_t clk = HAL_RCC_GetSysClockFreq();
+    return DWT_CYCCNT / (clk / 1000000UL);
+}
+
+static inline void digitalWrite(const Pin& p, GPIO_PinState state) {
     HAL_GPIO_WritePin(p.port, p.pin, state);
 }
 
@@ -46,4 +53,10 @@ class Stepper {
 };
 
 #endif
-
+/*
+在 main.c 初始化一次（放在 main() 里，CubeMX 生成的 SystemClock_Config() 之后）：
+CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;  // 使能 DWT
+DWT_CYCCNT  = 0;                                 // 清零计数器
+DWT_CTRL   |= DWT_CTRL_CYCCNTENA_Msk;            // 启动计数器
+micros()里面用到了
+*/
