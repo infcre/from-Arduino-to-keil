@@ -16,6 +16,11 @@ static inline void digitalWrite(const struct Pin p, GPIO_PinState state) {
 /*
 程序用到了Arduino里面的micros()，要自己做一个
 在CubeMX里面把TIM2的Prescaler设成 CPU频率-1 MHz，这样才有1微秒
+static inline uint32_t micros(void)
+{
+    return __HAL_TIM_GET_COUNTER(&htim2);
+}
+粘贴进main.c里面
 */
 
 
