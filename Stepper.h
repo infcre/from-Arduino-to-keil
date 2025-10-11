@@ -51,12 +51,9 @@ class Stepper {
 把下面一坨复制到main()里
 假设用的是 TIM2
 
-extern TIM_HandleTypeDef htim2;
-#define MICROS_TIM (&htim2)
-
 static inline uint32_t micros(void)
 {
-    return __HAL_TIM_GET_COUNTER(MICROS_TIM);
+    return __HAL_TIM_GET_COUNTER(&htim2);
 }
 
 程序用到了Arduino里面的micros()，要自己做一个
