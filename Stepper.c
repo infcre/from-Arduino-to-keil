@@ -1,4 +1,5 @@
 #include "Stepper.h"
+#include <stdlib.h>
 
 Stepper::Stepper(int number_of_steps,
                  Pin pin1, Pin pin2, Pin pin3, Pin pin4, Pin pin5)
@@ -33,7 +34,7 @@ void Stepper::setSpeed(long whatSpeed)
  */
 void Stepper::step(int steps_to_move)
 {
-  int steps_left = abs(steps_to_move);  // how many steps to take         这里要引用库！！
+  int steps_left = abs(steps_to_move);  // how many steps to take 
 
   // determine direction based on whether steps_to_mode is + or -:
   if (steps_to_move > 0) { this->direction = 1; }
@@ -43,7 +44,7 @@ void Stepper::step(int steps_to_move)
   // decrement the number of steps, moving one step each time:
   while (steps_left > 0)
   {
-    unsigned long now = micros();      //这里要重新写
+    unsigned long now = micros();
     // move only if the appropriate delay has passed:
     if (now - this->last_step_time >= this->step_delay)
     {
