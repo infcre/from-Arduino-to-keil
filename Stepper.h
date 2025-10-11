@@ -54,9 +54,11 @@ class Stepper {
 
 #endif
 /*
-在 main.c 初始化一次（放在 main() 里，CubeMX 生成的 SystemClock_Config() 之后）：
+把下面一坨复制到main()里，CubeMX 生成的 SystemClock_Config() 之后
+
 CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;  // 使能 DWT
 DWT_CYCCNT  = 0;                                 // 清零计数器
 DWT_CTRL   |= DWT_CTRL_CYCCNTENA_Msk;            // 启动计数器
-micros()里面用到了
+
+封装micros()的时候用到了
 */
