@@ -1,18 +1,15 @@
 const uint8_t PIN_TRIG = PA0;
 const uint8_t PIN_ECHO = PA1;
 
-unsigned long dist_cm() {
+unsigned long get_cm() {
   digitalWrite(PIN_TRIG, LOW);
-  delayMicroseconds(2);
+  delayMicroseconds(2);  //microsecond是微秒，millisecond是毫秒
   digitalWrite(PIN_TRIG, HIGH);
-  delayMicroseconds(10);          // >10 µs 的触发脉冲
+  delayMicroseconds(10);
   digitalWrite(PIN_TRIG, LOW);
+  unsigned long duration = pulseIn(PIN_ECHO, HIGH, 23200);  //这是测量从现在起到PIN_ECHO上出现高电平的时间,23200us超时（这个时候距离是4米）,返回的结果也是微秒
 
-  // 测高电平持续时间（单位 µs）
-  unsigned long duration = pulseIn(PIN_ECHO, HIGH, 26000); // 超时 26 ms≈4.5 m
-
-  // 换算成 cm（声速 340 m/s → 29 µs/cm，往返除以 2）
-  return duration / 58;
+  return duration / 58.82;    // 340m/s，一来一回，2x=vt,x=vt/2,x(cm)=(340m/s)*(t(10^-6s))/2*100
 }
 
 void setup() {
@@ -20,13 +17,14 @@ void setup() {
   pinMode(PIN_ECHO, INPUT);
   Serial.begin(115200);
   Serial.println("超声测距仪_测试");
+  Serial.println("--------------");
+  Serial.println("");
 }
 
 void loop() {
-  unsigned long cm = dist_cm();
-  if (cm == 0) cm = 999;          // 超时标记为“超量程”
+  unsigned long cm = get_cm();
   Serial.print("Distance: ");
   Serial.print(cm);
   Serial.println(" cm");
-  delay(200);                     // 刷新周期 200 ms
+  delay(500);
 }
