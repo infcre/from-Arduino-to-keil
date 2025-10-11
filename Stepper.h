@@ -49,8 +49,8 @@ class Stepper {
 #endif
 /*
 把下面一坨复制到main()里
+假设用的是 TIM2
 
-/* 假设用的是 TIM2 */
 extern TIM_HandleTypeDef htim2;
 #define MICROS_TIM (&htim2)
 
