@@ -23,23 +23,20 @@ static inline uint32_t micros(void)
 粘贴进main.c里面
 */
 
-
-// library interface description
 typedef struct {
-    int direction;            // Direction of rotation
-    unsigned long step_delay; // delay between steps, in ms, based on speed
-    int number_of_steps;      // total number of steps this motor can take
-    int pin_count;            // how many pins are in use.
-    int step_number;          // which step the motor is on
-
-    // motor pin numbers:
-    struct Pin motor_pin_1;
-    struct Pin motor_pin_2;
-    struct Pin motor_pin_3;
-    struct Pin motor_pin_4;
-    struct Pin motor_pin_5;
-
-    unsigned long last_step_time; // time stamp in us of when the last step was taken
+Pin pins[5];
+    int pin_count;
+    long step_number;
+    long speed;
+    long step_delay;
+    long last_step_time;
 } Stepper;
 
-#endif
+// 函数声明
+void Stepper_init(Stepper *Stepper, Pin *pins, int pin_count);
+void setSpeed(Stepper *Stepper, int rpm);
+void step(Stepper *Stepper, int steps);
+unsigned long micros(void);
+
+#endif /* STEPPER_H */
+
