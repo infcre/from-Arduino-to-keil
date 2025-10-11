@@ -3,12 +3,6 @@
 #define Stepper_h
 #include "stm32f1xx_hal.h"
 
-static inline uint32_t micros()
-{
-    const uint32_t clk = HAL_RCC_GetSysClockFreq();
-    return DWT_CYCCNT / (clk / 1000000UL);
-}
-
 static inline void digitalWrite(const Pin& p, GPIO_PinState state) {
     HAL_GPIO_WritePin(p.port, p.pin, state);
 }
@@ -54,11 +48,17 @@ class Stepper {
 
 #endif
 /*
-把下面一坨复制到main()里，CubeMX 生成的 SystemClock_Config() 之后
+把下面一坨复制到main()里
 
-CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;  // 使能 DWT
-DWT_CYCCNT  = 0;                                 // 清零计数器
-DWT_CTRL   |= DWT_CTRL_CYCCNTENA_Msk;            // 启动计数器
+/* 假设用的是 TIM2 */
+extern TIM_HandleTypeDef htim2;
+#define MICROS_TIM (&htim2)
 
-封装micros()的时候用到了
+static inline uint32_t micros(void)
+{
+    return __HAL_TIM_GET_COUNTER(MICROS_TIM);
+}
+
+程序用到了Arduino里面的micros()，要自己做一个
+在CubeMX里面把TIM2的Prescaler设成 CPU频率-1 MHz，这样才有1微秒
 */
