@@ -1,10 +1,7 @@
 #include "Stepper.h"
 
-Stepper::Stepper(int number_of_steps, GPIO_TypeDef* GPIOx,GPIO_Pin,
-                                      GPIO_TypeDef* GPIOx,GPIO_Pin,
-                                      GPIO_TypeDef* GPIOx,GPIO_Pin,
-                                      GPIO_TypeDef* GPIOx,GPIO_Pin,
-                                      GPIO_TypeDef* GPIOx,GPIO_Pin)
+Stepper::Stepper(int number_of_steps,
+                 Pin pin1, Pin pin2, Pin pin3, Pin pin4, Pin pin5)
 {
   this->step_number = 0;    // which step the motor is on
   this->direction = 0;      // motor direction
@@ -12,11 +9,11 @@ Stepper::Stepper(int number_of_steps, GPIO_TypeDef* GPIOx,GPIO_Pin,
   this->number_of_steps = number_of_steps; // total number of steps for this motor
 
   // Arduino pins for the motor control connection:
-  this->motor_pin_1 = motor_pin_1;
-  this->motor_pin_2 = motor_pin_2;
-  this->motor_pin_3 = motor_pin_3;
-  this->motor_pin_4 = motor_pin_4;
-  this->motor_pin_5 = motor_pin_5;
+  this->motor_pin_1 = pin1;
+  this->motor_pin_2 = pin2;
+  this->motor_pin_3 = pin3;
+  this->motor_pin_4 = pin4;
+  this->motor_pin_5 = pin5;
 
   // pin_count is used by the stepMotor() method:
   this->pin_count = 5;
