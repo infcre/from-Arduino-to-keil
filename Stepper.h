@@ -1,5 +1,10 @@
 #ifndef Stepper_h
 #define Stepper_h
+#include "stm32f1xx_hal.h"
+
+inline void digitalWrite(const Pin& p, GPIO_PinState state) {
+    HAL_GPIO_WritePin(p.port, p.pin, state);
+}
 
 struct Pin {
     GPIO_TypeDef* GPIOx;
@@ -11,11 +16,7 @@ class Stepper {
   public:
     // constructors:
     Stepper(int number_of_steps,
-                 GPIO_TypeDef* port1, uint16_t pin1,
-                 GPIO_TypeDef* port2, uint16_t pin2,
-                 GPIO_TypeDef* port3, uint16_t pin3,
-                 GPIO_TypeDef* port4, uint16_t pin4,
-                 GPIO_TypeDef* port5, uint16_t pin5)
+            Pin pin1, Pin pin2, Pin pin3, Pin pin4, Pin pin5);
 
     // speed setter method:
     void setSpeed(long whatSpeed);
