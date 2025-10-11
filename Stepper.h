@@ -7,6 +7,18 @@ static inline void digitalWrite(const Pin& p, GPIO_PinState state) {
     HAL_GPIO_WritePin(p.port, p.pin, state);
 }
 
+static inline uint32_t micros(void)
+{
+    return __HAL_TIM_GET_COUNTER(&htim2);
+}
+
+
+/*
+程序用到了Arduino里面的micros()，要自己做一个
+在CubeMX里面把TIM2的Prescaler设成 CPU频率-1 MHz，这样才有1微秒
+*/
+
+
 struct Pin {
     GPIO_TypeDef* GPIOx;
     uint16_t      GPIO_Pin;
@@ -47,15 +59,3 @@ class Stepper {
 };
 
 #endif
-/*
-把下面一坨复制到main()里
-假设用的是 TIM2
-
-static inline uint32_t micros(void)
-{
-    return __HAL_TIM_GET_COUNTER(&htim2);
-}
-
-程序用到了Arduino里面的micros()，要自己做一个
-在CubeMX里面把TIM2的Prescaler设成 CPU频率-1 MHz，这样才有1微秒
-*/
